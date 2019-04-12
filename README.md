@@ -156,6 +156,6 @@ Thanks
 Contact me
 ----------
 
-twsxtd@gmail.com
+anti-bypass@typedef.cn
 
 [Join discussion](https://gitter.im/lianglixin/epic?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 

@@ -20,7 +20,7 @@ dependencies {
 
 然后就可以使用了。
 
-> 现在已经支持Android P/Q，如有定制需求请联系SK团队：anti-bypass@fou.ink
+> 现在已经支持Android P/Q，如有定制需求请联系SK团队：anti-bypass@typedef.cn
 
 ### 几个例子
 
@@ -125,4 +125,4 @@ ART      | mips         | No
 
 ## 联系我
 
-twsxtd@gmail.com
+anti-bypass@typedef.cn
