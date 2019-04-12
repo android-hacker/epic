@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, weishu twsxtd@gmail.com
+ * Copyright (c) 2019, Lianglixin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ class Trampoline {
 
         int quickCompiledCodeSize = Epic.getQuickCompiledCodeSize(originMethod);
         int sizeOfDirectJump = shellCode.sizeOfDirectJump();
+		if(Build.VERSION.SDK_INT>27)return true;
         if (quickCompiledCodeSize < sizeOfDirectJump) {
             Logger.w(TAG, originMethod.toGenericString() + " quickCompiledCodeSize: " + quickCompiledCodeSize);
             if(Build.VERSION.SDK_INT<28)
