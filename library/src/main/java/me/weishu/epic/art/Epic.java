@@ -63,6 +63,8 @@ public final class Epic {
                     case Build.VERSION_CODES.N_MR1:
                     case Build.VERSION_CODES.O:
                     case Build.VERSION_CODES.O_MR1:
+                    case 28:
+                    case 29:
                         ShellCode = new Arm64_2();
                         break;
                 }
@@ -71,12 +73,9 @@ public final class Epic {
             } else {
                 // todo ARM32
                 Logger.w(TAG, "ARM32, not support now.");
+                ShellCode = new Thumb2();
+                Logger.w(TAG, "Default Thumb2.");
             }
-        }
-        if (ShellCode == null) {
-            Logger.e(TAG, "SK QQ 384550791 EMUI9.x Invalidate2Validate");
-            ShellCode = new Thumb2();
-            // throw new RuntimeException("Do not support this ARCH now!! API LEVEL:" + apiLevel);
         }
         Logger.i(TAG, "Using: " + ShellCode.getName());
     }

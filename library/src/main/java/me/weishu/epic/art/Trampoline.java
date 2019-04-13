@@ -66,8 +66,8 @@ class Trampoline {
         if ((i < j) && (i > 0))
         {
             Logger.w(TAG, originMethod.toGenericString() + " quickCompiledCodeSize: " + i);
-            if(!Runtime.is64Bit())
-                return false;
+            //if(!Runtime.isFHook())
+            //    return false;
         }
         /*
         int quickCompiledCodeSize = Epic.getQuickCompiledCodeSize(originMethod);
