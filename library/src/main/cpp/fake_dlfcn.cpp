@@ -1,4 +1,5 @@
 // Copyright (c) 2016 avs333
+// Copyright (c) 2019 Lianglixin
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 //		of this software and associated documentation files (the "Software"), to deal
@@ -75,7 +76,8 @@ void *fake_dlopen(const char *libpath, int flags) {
 	struct ctx *ctx = 0;
 	off_t load_addr, size;
 	int k, fd = -1, found = 0;
-	void* shoff = NULL;
+	uintptr_t shoff;
+
 	Elf_Ehdr *elf = (Elf_Ehdr *) MAP_FAILED;
 
 #define fatal(fmt, args...) do { log_err(fmt,##args); goto err_exit; } while(0)
@@ -113,9 +115,9 @@ void *fake_dlopen(const char *libpath, int flags) {
 	if (!ctx) fatal("no memory for %s", libpath);
 
 	ctx->load_addr = (void *) load_addr;
-	shoff = reinterpret_cast<int64_t *>(elf) + elf->e_shoff;
+	shoff = (reinterpret_cast<uintptr_t>(elf) + (uintptr_t)(elf->e_shoff));
 
-	for (k = 0; k < elf->e_shnum; k++, shoff = (uint64_t*)shoff + elf->e_shentsize) {
+	for (k = 0; k < elf->e_shnum; k++, shoff += (uintptr_t)(elf->e_shentsize)) {
 
 		Elf_Shdr *sh = (Elf_Shdr *) shoff;
 		log_dbg("%s: k=%d shdr=%p type=%x", __func__, k, sh, sh->sh_type);
@@ -126,7 +128,7 @@ void *fake_dlopen(const char *libpath, int flags) {
 				if (ctx->dynsym) fatal("%s: duplicate DYNSYM sections", libpath); /* .dynsym */
 				ctx->dynsym = malloc(sh->sh_size);
 				if (!ctx->dynsym) fatal("%s: no memory for .dynsym", libpath);
-				memcpy(ctx->dynsym, ((uint64_t *) elf) + sh->sh_offset, sh->sh_size);
+				memcpy(ctx->dynsym, reinterpret_cast<uint8_t*>(((uintptr_t) elf) + (uintptr_t)(sh->sh_offset)), sh->sh_size);
 				ctx->nsyms = (sh->sh_size / sizeof(Elf_Sym));
 				break;
 
@@ -134,7 +136,7 @@ void *fake_dlopen(const char *libpath, int flags) {
 				if (ctx->dynstr) break;    /* .dynstr is guaranteed to be the first STRTAB */
 				ctx->dynstr = malloc(sh->sh_size);
 				if (!ctx->dynstr) fatal("%s: no memory for .dynstr", libpath);
-				memcpy(ctx->dynstr, ((uint64_t *) elf) + sh->sh_offset, sh->sh_size);
+				memcpy(ctx->dynstr, reinterpret_cast<uint8_t*>(((uintptr_t) elf) + (uintptr_t)(sh->sh_offset)), sh->sh_size);
 				break;
 
 			case SHT_PROGBITS:
@@ -174,9 +176,11 @@ void *fake_dlsym(void *handle, const char *name) {
 		if (strcmp(strings + sym->st_name, name) == 0) {
 			/*  NB: sym->st_value is an offset into the section for relocatables,
             but a VMA for shared libs or exe files, so we have to subtract the bias */
-			void *ret = (uint64_t*)(ctx->load_addr) + (sym->st_value) - (ctx->bias);
+            uintptr_t ret = (uintptr_t)(ctx->load_addr) + (uintptr_t)(sym->st_value) -
+			        (unsigned long long)
+                    (ctx->bias);
 			log_info("%s found at %p", name, ret);
-			return ret;
+			return reinterpret_cast<uint8_t*>(ret);
 		}
 	return 0;
 }

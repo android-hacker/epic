@@ -61,17 +61,32 @@ class Trampoline {
         byte[] page = create();
         EpicNative.put(page, getTrampolineAddress());
 
+        int i = Epic.getQuickCompiledCodeSize(originMethod);
+        int j = shellCode.sizeOfDirectJump();
+        if ((i < j) && (i > 0))
+        {
+            Logger.w(TAG, originMethod.toGenericString() + " quickCompiledCodeSize: " + i);
+            if(!Runtime.is64Bit())
+                return false;
+        }
+        /*
         int quickCompiledCodeSize = Epic.getQuickCompiledCodeSize(originMethod);
         int sizeOfDirectJump = shellCode.sizeOfDirectJump();
-		if(Build.VERSION.SDK_INT>27)return true;
+        if (quickCompiledCodeSize < sizeOfDirectJump && quickCompiledCodeSize>0)
+            Logger.w(TAG, originMethod.toGenericString() + " quickCompiledCodeSize: " + quickCompiledCodeSize);
+		if(Build.VERSION.SDK_INT>29)return true;
         if (quickCompiledCodeSize < sizeOfDirectJump) {
             Logger.w(TAG, originMethod.toGenericString() + " quickCompiledCodeSize: " + quickCompiledCodeSize);
-            if(Build.VERSION.SDK_INT<28)
+            if(Build.VERSION.SDK_INT<29)
             {
-                originMethod.setEntryPointFromQuickCompiledCode(getTrampolinePc());
+                long lBuffer=getTrampolinePc();
+                Logger.i(TAG, "getTrampolinePc():" + lBuffer);
+                originMethod.setEntryPointFromQuickCompiledCode(lBuffer);
+                Logger.i(TAG, "Set EP OK.");
             }
             return true;
         }
+        */
         // 这里是绝对不能改EntryPoint的，碰到GC就挂(GC暂停线程的时候，遍历所有线程堆栈，如果被hook的方法在堆栈上，那就GG)
         // source.setEntryPointFromQuickCompiledCode(script.getTrampolinePc());
         return activate();

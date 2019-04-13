@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, weishu twsxtd@gmail.com
+ * Copyright (c) 2019, Lianglixin king@ithot.top king@typedef.cn
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,19 +112,17 @@ class Offset {
         ART_ACCESS_FLAG_OFFSET.setLength(Offset.BitWidth.DWORD);
 
         final int apiLevel = Build.VERSION.SDK_INT;
-        if (apiLevel > 27) {
-            ART_QUICK_CODE_OFFSET.setLength(Offset.BitWidth.DWORD);
-            ART_JNI_ENTRY_OFFSET.setLength(BitWidth.DWORD);
-            ART_QUICK_CODE_OFFSET.setOffset(28);
-            ART_JNI_ENTRY_OFFSET.setOffset(24);
-            ART_ACCESS_FLAG_OFFSET.setOffset(4);
-            return;
-        }
 
         if (Runtime.is64Bit()) {
             ART_QUICK_CODE_OFFSET.setLength(Offset.BitWidth.QWORD);
             ART_JNI_ENTRY_OFFSET.setLength(BitWidth.QWORD);
             switch (apiLevel) {
+                case 29:
+                case 28:
+                    ART_QUICK_CODE_OFFSET.setOffset(32);
+                    ART_JNI_ENTRY_OFFSET.setOffset(24);
+                    ART_ACCESS_FLAG_OFFSET.setOffset(4);
+                    break;
                 case Build.VERSION_CODES.O_MR1:
                 case Build.VERSION_CODES.O:
                     ART_QUICK_CODE_OFFSET.setOffset(40);
@@ -165,6 +163,11 @@ class Offset {
             ART_QUICK_CODE_OFFSET.setLength(Offset.BitWidth.DWORD);
             ART_JNI_ENTRY_OFFSET.setLength(BitWidth.DWORD);
             switch (apiLevel) {
+                case 29:
+                case 28:
+                    ART_QUICK_CODE_OFFSET.setOffset(24);
+                    ART_JNI_ENTRY_OFFSET.setOffset(20);
+                    ART_ACCESS_FLAG_OFFSET.setOffset(4);
                 case Build.VERSION_CODES.O_MR1:
                 case Build.VERSION_CODES.O:
                     ART_QUICK_CODE_OFFSET.setOffset(28);
