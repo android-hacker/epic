@@ -19,7 +19,7 @@ package me.weishu.epic.art.entry;
 import android.os.Build;
 import android.util.Pair;
 
-import com.taobao.android.dexposed.DexposedBridge;
+import de.robv.android.xposed.DexposedBridge;
 import com.taobao.android.dexposed.utility.Debug;
 import com.taobao.android.dexposed.utility.Logger;
 
@@ -149,7 +149,7 @@ public class Entry {
         final int sourceMethod = ByteBuffer.wrap(EpicNative.get(struct + 12, 4)).order(ByteOrder.LITTLE_ENDIAN).getInt();
         Logger.i(TAG, "sourceMethod:" + Integer.toHexString(sourceMethod));
 
-        Epic.MethodInfo originMethodInfo = Epic.getMethodInfo(sourceMethod);
+        Epic.MethodInfo originMethodInfo = Epic.getMethodInfo(Integer.toHexString(sourceMethod));
         Logger.i(TAG, "originMethodInfo :" + originMethodInfo);
 
         final Pair<Object, Object[]> constructArguments = constructArguments(originMethodInfo, self, rr1, r2, r3, sp);
@@ -380,7 +380,7 @@ public class Entry {
             } else if (type == double.class) {
                 return byteBuffer.getDouble();
             } else if (type == boolean.class) {
-                return byteBuffer.getInt() == 0;
+                return byteBuffer.getInt() != 0;
             } else {
                 throw new RuntimeException("unknown type:" + type);
             }

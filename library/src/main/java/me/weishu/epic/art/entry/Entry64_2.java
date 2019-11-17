@@ -16,8 +16,6 @@
 
 package me.weishu.epic.art.entry;
 
-import com.taobao.android.dexposed.DexposedBridge;
-import com.taobao.android.dexposed.XposedHelpers;
 import com.taobao.android.dexposed.utility.Debug;
 import com.taobao.android.dexposed.utility.Logger;
 
@@ -28,6 +26,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.robv.android.xposed.DexposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 import me.weishu.epic.art.Epic;
 import me.weishu.epic.art.EpicNative;
 
@@ -359,7 +359,7 @@ public class Entry64_2 {
         final long sourceMethod = ByteBuffer.wrap(EpicNative.get(struct + 16, 8)).order(ByteOrder.LITTLE_ENDIAN).getLong();
         Logger.d(TAG, "sourceMethod:" + Long.toHexString(sourceMethod));
 
-        Epic.MethodInfo originMethodInfo = Epic.getMethodInfo(sourceMethod);
+        Epic.MethodInfo originMethodInfo = Epic.getMethodInfo(Long.toHexString(sourceMethod));
         Logger.d(TAG, "originMethodInfo :" + originMethodInfo);
 
         boolean isStatic = originMethodInfo.isStatic;

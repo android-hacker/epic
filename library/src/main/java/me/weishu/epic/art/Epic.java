@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Lianglixin
+ * Copyright (c) 2017, weishu
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,9 +29,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-import me.weishu.epic.art.arch.Arm64_2;
+import me.weishu.epic.art.arch.Arm64;
 import me.weishu.epic.art.arch.ShellCode;
 import me.weishu.epic.art.arch.Thumb2;
 import me.weishu.epic.art.method.ArtMethod;
@@ -45,37 +46,28 @@ public final class Epic {
 
     private static final Map<String, ArtMethod> backupMethodsMapping = new ConcurrentHashMap<>();
 
-    private static final Map<Long, MethodInfo> originSigs = new ConcurrentHashMap<>();
+    private static final Map<String, MethodInfo> originSigs = new TreeMap<>();
 
-    private static final Map<Long, Trampoline> scripts = new HashMap<>();
+    private static final Map<String, Trampoline> scripts = new TreeMap<>();
     private static ShellCode ShellCode;
 
     static {
         boolean isArm = true; // TODO: 17/11/21 TODO
         int apiLevel = Build.VERSION.SDK_INT;
+        boolean thumb2 = true;
         if (isArm) {
             if (Runtime.is64Bit()) {
-                switch (apiLevel) {
-                    case Build.VERSION_CODES.M:
-                        ShellCode = new Arm64_2();
-                        break;
-                    case Build.VERSION_CODES.N:
-                    case Build.VERSION_CODES.N_MR1:
-                    case Build.VERSION_CODES.O:
-                    case Build.VERSION_CODES.O_MR1:
-                    case 28:
-                    case 29:
-                        ShellCode = new Arm64_2();
-                        break;
-                }
+                ShellCode = new Arm64();
             } else if (Runtime.isThumb2()) {
                 ShellCode = new Thumb2();
             } else {
-                // todo ARM32
-                Logger.w(TAG, "ARM32, not support now.");
+                thumb2 = false;
                 ShellCode = new Thumb2();
-                Logger.w(TAG, "Default Thumb2.");
+                Logger.w(TAG, "ARM32, not support now.");
             }
+        }
+        if (ShellCode == null) {
+            throw new RuntimeException("Do not support this ARCH now!! API LEVEL:" + apiLevel + " thumb2 ? : " + thumb2);
         }
         Logger.i(TAG, "Using: " + ShellCode.getName());
     }
@@ -103,7 +95,7 @@ public final class Epic {
         }
         methodInfo.returnType = artOrigin.getReturnType();
         methodInfo.method = artOrigin;
-        originSigs.put(artOrigin.getAddress(), methodInfo);
+        originSigs.put(Long.toHexString(artOrigin.getAddress()), methodInfo);
 
         if (!artOrigin.isAccessible()) {
             artOrigin.setAccessible(true);
@@ -139,10 +131,10 @@ public final class Epic {
         final EntryLock lock = EntryLock.obtain(originEntry);
         //noinspection SynchronizationOnLocalVariableOrMethodParameter
         synchronized (lock) {
-            if (!scripts.containsKey(key)) {
-                scripts.put(key, new Trampoline(ShellCode, originEntry));
+            if (!scripts.containsKey(Long.toHexString(key))) {
+                scripts.put(Long.toHexString(key), new Trampoline(ShellCode, originEntry));
             }
-            Trampoline trampoline = scripts.get(key);
+            Trampoline trampoline = scripts.get(Long.toHexString(key));
             boolean ret = trampoline.install(artOrigin);
             // Logger.d(TAG, "hook Method result:" + ret);
             return ret;
@@ -192,7 +184,7 @@ public final class Epic {
         backupMethodsMapping.put(identifier, backup);
     }
 
-    public static MethodInfo getMethodInfo(long address) {
+    public static MethodInfo getMethodInfo(String address) {
         return originSigs.get(address);
     }
 

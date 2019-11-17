@@ -32,8 +32,6 @@ public class Runtime {
     private volatile static boolean g64 = false;
     private volatile static boolean isArt = true;
 
-    private static boolean f_hook = false;
-
     static {
         try {
             g64 = (boolean) Class.forName("dalvik.system.VMRuntime").getDeclaredMethod("is64Bit").invoke(Class.forName("dalvik.system.VMRuntime").getDeclaredMethod("getRuntime").invoke(null));
@@ -42,20 +40,16 @@ public class Runtime {
             g64 = false;
         }
         isArt = System.getProperty("java.vm.version").startsWith("2");
-        f_hook = "true".equals(System.getProperty("epic.force"));
         Log.i(TAG, "is64Bit: " + g64 + ", isArt: " + isArt);
-        Log.i(TAG, "forcehook: " + f_hook);
     }
 
     public static boolean is64Bit() {
-        return false;
+        return g64;
     }
 
     public static boolean isArt() {
-        return true;
+        return isArt;
     }
-
-    public static boolean isFHook(){return true;}
 
     public static boolean isThumb2() {
         if (isThumb != null) {

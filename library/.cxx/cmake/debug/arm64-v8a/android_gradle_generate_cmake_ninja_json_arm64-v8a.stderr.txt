@@ -1,0 +1,20 @@
+CMake Error at D:/DroidSDK/ndk-bundle/build/cmake/android.toolchain.cmake:169 (message):
+  GCC is no longer supported.  See
+  https://android.googlesource.com/platform/ndk/+/master/docs/ClangMigration.md.
+Call Stack (most recent call first):
+  D:/DroidSDK/cmake/3.6.4111459/share/cmake-3.6/Modules/CMakeDetermineSystem.cmake:98 (include)
+  CMakeLists.txt
+
+
+CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage
+CMake Error in CMakeLists.txt:
+  No cmake_minimum_required command is present.  A line of code such as
+
+    cmake_minimum_required(VERSION 3.6)
+
+  should be added at the top of the file.  The version specified may be lower
+  if you wish to support older CMake versions for this project.  For more
+  information run "cmake --help-policy CMP0000".
+
+

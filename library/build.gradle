@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 29
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 27
+        minSdkVersion 15
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -17,12 +17,6 @@ android {
             // libraries Gradle should build and package with your APK.
             abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
-        externalNativeBuild {
-            cmake {
-                cppFlags "-std=c++11"
-                //arguments "-DANDROID_TOOLCHAIN=gcc"
-            }
-        }
     }
     buildTypes {
         release {
@@ -30,24 +24,29 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
     externalNativeBuild {
-        cmake {
-            path 'src/main/cpp/CMakeLists.txt'
+        ndkBuild {
+            path file('src/main/jni/Android.mk')
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "me.weishu:free_reflection:2.1.0"
+    compileOnly 'me.weishu.exposed:exposed-xposedapi:0.4.5'
 }
 
 apply plugin: 'com.novoda.bintray-release'
 
 publish {
-    userOrg = 'antiweb'//
-    groupId = 'me.weishu'
+    userOrg = 'SK Team'//
+    groupId = 'com.sk'
     artifactId = 'epic'
-    publishVersion = '0.3.3'
+    publishVersion = '0.6.2-c'
     desc = 'Android Java AOP Method Hook (Dexposed on ART)'
     website = 'https://www.fou.ink/'
 }

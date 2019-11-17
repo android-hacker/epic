@@ -1,0 +1,72 @@
+{
+  "variant": {
+    "module": {
+      "rootBuildGradleFolder": "E:\\Project_Conntainer\\VMProject\\epic",
+      "sdkFolder": "D:\\DroidSDK",
+      "isNativeCompilerSettingsCacheEnabled": false,
+      "isBuildOnlyTargetAbiEnabled": true,
+      "splitsAbiFilterSet": [],
+      "intermediatesFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library\\build\\intermediates",
+      "gradleModulePathName": ":library",
+      "moduleRootFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library",
+      "makeFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\src\\main\\cpp\\CMakeLists.txt",
+      "buildSystem": "CMAKE",
+      "compilerSettingsCacheFolder": "E:\\Project_Conntainer\\VMProject\\epic\\.cxx",
+      "cxxFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx",
+      "ndkFolder": "D:\\DroidSDK\\ndk-bundle",
+      "ndkVersion": "20.0.5594570",
+      "ndkSupportedAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultAbiList": [
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "X86",
+        "X86_64"
+      ],
+      "cmakeToolchainFile": "."
+    },
+    "buildSystemArgumentList": [
+      "-DANDROID_TOOLCHAIN\u003dgcc"
+    ],
+    "cFlagList": [],
+    "cppFlagsList": [
+      "-std\u003dc++11"
+    ],
+    "variantName": "debug",
+    "soFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library\\build\\intermediates\\cmake\\debug\\lib",
+    "objFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library\\build\\intermediates\\cmake\\debug\\obj",
+    "jsonFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cmake\\debug",
+    "gradleBuildOutputFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cxx\\debug",
+    "isDebuggableEnabled": true,
+    "validAbiList": [
+      "ARMEABI_V7A",
+      "ARM64_V8A"
+    ],
+    "buildTargetSet": []
+  },
+  "abi": "ARM64_V8A",
+  "abiPlatformVersion": 16,
+  "cxxBuildFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cmake\\debug\\arm64-v8a",
+  "jsonFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cmake\\debug\\arm64-v8a\\android_gradle_build.json",
+  "gradleBuildOutputFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cxx\\debug\\arm64-v8a",
+  "objFolder": "E:\\Project_Conntainer\\VMProject\\epic\\library\\build\\intermediates\\cmake\\debug\\obj\\arm64-v8a",
+  "buildCommandFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cmake\\debug\\arm64-v8a\\build_command.txt",
+  "buildOutputFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cmake\\debug\\arm64-v8a\\build_output.txt",
+  "modelOutputFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cmake\\debug\\arm64-v8a\\build_model.json",
+  "cmake": {
+    "cmakeListsWrapperFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cxx\\debug\\arm64-v8a\\CMakeLists.txt",
+    "toolchainWrapperFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cxx\\debug\\arm64-v8a\\android_gradle_build.toolchain.cmake",
+    "buildGenerationStateFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cxx\\debug\\arm64-v8a\\build_generation_state.json",
+    "cacheKeyFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cxx\\debug\\arm64-v8a\\compiler_cache_key.json",
+    "compilerCacheUseFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cxx\\debug\\arm64-v8a\\compiler_cache_use.json",
+    "compilerCacheWriteFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cxx\\debug\\arm64-v8a\\compiler_cache_write.json",
+    "toolchainSettingsFromCacheFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cxx\\debug\\arm64-v8a\\compiler_settings_cache.cmake",
+    "cmakeWrappingBaseFolder": "."
+  },
+  "jsonGenerationLoggingRecordFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cmake\\debug\\arm64-v8a\\json_generation_record.json",
+  "compileCommandsJsonFile": "E:\\Project_Conntainer\\VMProject\\epic\\library\\.cxx\\cmake\\debug\\arm64-v8a\\compile_commands.json"
+}

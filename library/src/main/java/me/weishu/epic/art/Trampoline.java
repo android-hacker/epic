@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Lianglixin
+ * Copyright (c) 2017, weishu twsxtd@gmail.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package me.weishu.epic.art;
 
-import android.os.Build;
-
 import com.taobao.android.dexposed.utility.Debug;
 import com.taobao.android.dexposed.utility.Logger;
 import com.taobao.android.dexposed.utility.Runtime;
@@ -28,7 +26,7 @@ import java.util.Set;
 
 import me.weishu.epic.art.arch.ShellCode;
 import me.weishu.epic.art.entry.Entry;
-import me.weishu.epic.art.entry.Entry64_2;
+import me.weishu.epic.art.entry.Entry64;
 import me.weishu.epic.art.method.ArtMethod;
 
 class Trampoline {
@@ -61,32 +59,13 @@ class Trampoline {
         byte[] page = create();
         EpicNative.put(page, getTrampolineAddress());
 
-        int i = Epic.getQuickCompiledCodeSize(originMethod);
-        int j = shellCode.sizeOfDirectJump();
-        if ((i < j) && (i > 0))
-        {
-            Logger.w(TAG, originMethod.toGenericString() + " quickCompiledCodeSize: " + i);
-            //if(!Runtime.isFHook())
-            //    return false;
-        }
-        /*
         int quickCompiledCodeSize = Epic.getQuickCompiledCodeSize(originMethod);
         int sizeOfDirectJump = shellCode.sizeOfDirectJump();
-        if (quickCompiledCodeSize < sizeOfDirectJump && quickCompiledCodeSize>0)
-            Logger.w(TAG, originMethod.toGenericString() + " quickCompiledCodeSize: " + quickCompiledCodeSize);
-		if(Build.VERSION.SDK_INT>29)return true;
         if (quickCompiledCodeSize < sizeOfDirectJump) {
             Logger.w(TAG, originMethod.toGenericString() + " quickCompiledCodeSize: " + quickCompiledCodeSize);
-            if(Build.VERSION.SDK_INT<29)
-            {
-                long lBuffer=getTrampolinePc();
-                Logger.i(TAG, "getTrampolinePc():" + lBuffer);
-                originMethod.setEntryPointFromQuickCompiledCode(lBuffer);
-                Logger.i(TAG, "Set EP OK.");
-            }
+            originMethod.setEntryPointFromQuickCompiledCode(getTrampolinePc());
             return true;
         }
-        */
         // 这里是绝对不能改EntryPoint的，碰到GC就挂(GC暂停线程的时候，遍历所有线程堆栈，如果被hook的方法在堆栈上，那就GG)
         // source.setEntryPointFromQuickCompiledCode(script.getTrampolinePc());
         return activate();
@@ -165,12 +144,12 @@ class Trampoline {
     }
 
     private byte[] createTrampoline(ArtMethod source){
-        final Epic.MethodInfo methodInfo = Epic.getMethodInfo(source.getAddress());
+        final Epic.MethodInfo methodInfo = Epic.getMethodInfo(Long.toHexString(source.getAddress()));
         final Class<?> returnType = methodInfo.returnType;
 
 //        Method bridgeMethod = Runtime.is64Bit() ? (Build.VERSION.SDK_INT == 23 ? Entry64_2.getBridgeMethod(methodInfo) : Entry64.getBridgeMethod(returnType))
 //                : Entry.getBridgeMethod(returnType);
-        Method bridgeMethod = Runtime.is64Bit() ? Entry64_2.getBridgeMethod(methodInfo)
+        Method bridgeMethod = Runtime.is64Bit() ? Entry64.getBridgeMethod(returnType)
                 : Entry.getBridgeMethod(returnType);
 
         final ArtMethod target = ArtMethod.of(bridgeMethod);
